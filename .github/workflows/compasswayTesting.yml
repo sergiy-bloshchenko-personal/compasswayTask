@@ -11,7 +11,7 @@ on:
 jobs:
   checkoutTesting:
     name: Compassway testing
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 1000
 
     env:
@@ -42,7 +42,9 @@ jobs:
           cache: maven
 
       - name: Run Tests by maven
-        run: mvn -B clean package --file pom.xml -Dthreads=${{env.threads}} -DdriverType="${{env.driver}}"
+        run: | 
+          ls -l
+          mvn -B clean package --file pom.xml -Dthreads=${{env.threads}} -DdriverType="${{env.driver}}"
       
       - name: Generate Allure report files
         uses: simple-elf/allure-report-action@master
