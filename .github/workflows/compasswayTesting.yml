@@ -43,6 +43,7 @@ jobs:
 
       - name: Run Tests by maven
         run: | 
+          pwd
           ls -l
           mvn -B clean package --file pom.xml -Dthreads=${{env.threads}} -DdriverType="${{env.driver}}"
       
