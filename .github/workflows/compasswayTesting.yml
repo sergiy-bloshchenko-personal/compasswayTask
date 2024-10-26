@@ -11,7 +11,7 @@ on:
 jobs:
   checkoutTesting:
     name: Compassway testing
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     timeout-minutes: 1000
 
     env:
