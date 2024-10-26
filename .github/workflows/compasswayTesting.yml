@@ -1,0 +1,142 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Compassway testing
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
+
+jobs:
+  checkoutTesting:
+    name: Compassway testing
+    runs-on: ubuntu-latest
+    timeout-minutes: 1000
+
+    env:
+      branch: 'develop'
+      category: 'com.viaplaynew.categories.Env_Qadev && com.viaplaynew.categories.App_Checkout'
+      area: 'checkout'
+      report: 'TEST-*.checkout.*.xml'
+      threads: 6
+      remoteSessionTimeout: '300'
+      driver: 'RemoteDriver'
+      profile: 'qa-dev'
+      DEV_TIME_ZONE: 'Europe/Stockholm'
+      DEV_HEADER_SECRET: ${{secrets.GHA_DEV_HTTP_ACCESS_SECRET}}
+
+    steps:
+      - uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: ${{env.DEV_TIME_ZONE}}
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{env.branch}}
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '22'
+          distribution: 'oracle'
+          cache: maven
+
+#      - name: Install and run openconnect VPN
+#        run: |
+#          sudo apt-get -y update
+#          sudo apt-get -y install openconnect
+#          echo ${{secrets.LEXX_OPENCONNECT_PASSWORD}} | sudo openconnect 'gp.viaplay.tv' --user=${{secrets.LEXX_OPENCONNECT_USER}} --passwd-on-stdin --protocol=gp &
+
+#      - uses: browser-actions/setup-chrome@latest
+#      - uses: nanasess/setup-chromedriver@v2
+
+#      - uses: Xotabu4/selenoid-github-action@v2
+#        with:
+#          selenoid-start-arguments: --vnc --args "-timeout ${{env.remoteSessionTimeout}}s -limit ${{env.threads}}"
+
+      - name: Install and run selenoid
+        uses: n-ton4/selenoid-github-action@master
+        id: start-selenoid
+        continue-on-error: false
+        with:
+          version: 1.10.1
+          args: -timeout ${{env.remoteSessionTimeout}}s -limit ${{env.threads}}
+          browsers: chrome;firefox
+          last-versions: 1
+
+      - name: Run Tests by maven
+        run: |
+          if [ "${{env.driver}}" == "WebDriver" ]; then
+            if [ ! -d "src/main/resources/webdrivers" ]; then
+              mkdir src/main/resources/webdrivers
+            fi
+            sudo cp /usr/local/share/chrome_driver/chromedriver src/main/resources/webdrivers
+            sudo chown -R runner:docker src/main/resources/webdrivers
+            sudo ls -l src/main/resources/webdrivers
+            if [ -f "src/main/resources/webdrivers/chromedriver_linux" ]; then
+              rm src/main/resources/webdrivers/chromedriver_linux
+            fi
+            mv src/main/resources/webdrivers/chromedriver src/main/resources/webdrivers/chromedriver_linux
+            sudo pwd
+            sudo ls -l
+            sudo ls -l src
+            sudo ls -l src/main
+            sudo ls -l src/main/resources
+            sudo ls -l src/main/resources/webdrivers
+            mvn -B clean compile --file pom.xml
+            sudo ls -l target
+            sudo ls -l target/classes
+            if [ ! -d "target/classes/webdrivers" ]; then
+              mkdir target/classes/webdrivers
+              cp src/main/resources/webdrivers/chromedriver_linux target/classes/webdrivers
+            fi
+            chmod +x target/classes/webdrivers/chromedriver_linux
+            sudo ls -l target/classes/webdrivers
+          else
+            mvn -B clean compile  --file pom.xml
+          fi
+          echo ""
+          echo ""
+          echo "================================== Running ${{env.category}} ==============================================="
+          echo ""
+          mvn package --file pom.xml -Dcategory="${{env.category}}" -Dthreads=${{env.threads}} -P${{env.profile}} -DdriverType="${{env.driver}}"
+      
+      - name: Generate Allure report files
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: target/allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
+
+      - name: Update URL in report
+        run: sudo sed -i 's|\(URL=\).*|'"URL=https://nentgroup.github.io/lexx/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
+
+      - name: Deploy report to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: allure-history
+          destination_dir: ${{env.area}}
+          keep_files: true
+          cname: https://github.com/sergiy-bloshchenko-personal/compasswayTask
+
+      - name: Post the link to the report
+        if: always()
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: 'Test report'
+          state: 'success'
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          target_url: sergiy-bloshchenko-personal/compasswayTask/github-allure-history/${{github.run_number}}
+          
+      - name: Publish JUnit Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: ${{env.area}} JUnit Report
+          path: target/surefire-reports/${{env.report}}
+          reporter: 'java-junit'
+          fail-on-error: 'true'
