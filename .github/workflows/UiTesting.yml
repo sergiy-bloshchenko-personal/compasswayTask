@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Compassway testing
+name: UI testing
 
 on:
   workflow_dispatch:
@@ -10,19 +10,18 @@ on:
 
 jobs:
   checkoutTesting:
-    name: Compassway testing
-    runs-on: ubuntu-latest
+    name: UI testing
+    runs-on: windows-latest
     timeout-minutes: 1000
 
     env:
       branch: 'main'
       category: 'UiTesting'
-      area: 'compassway'
-      report: 'TEST-*.compassway.*.xml'
+      area: 'uitesting'
+      report: 'TEST-*.uitesting.*.xml'
       threads: 1
       remoteSessionTimeout: '300'
-      driver: 'WebDriver'
-      profile: 'qa-dev'
+      profile: 'chrome'
       DEV_TIME_ZONE: 'Europe/Kyiv'
       DEV_HEADER_SECRET: ${{secrets.GHA_DEV_HTTP_ACCESS_SECRET}}
 
