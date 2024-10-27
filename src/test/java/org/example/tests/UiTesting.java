@@ -7,8 +7,7 @@ import org.example.pages.CaptchaPage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Story;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -46,7 +45,7 @@ public class UiTesting {
     
     @Test
     @TestCaseId("UI.AmazonPage.1")
-    @Stories("User should be able to navigate to the main Amazon page with default language EN")
+    @Story("User should be able to navigate to the main Amazon page with default language EN")
     public void mainPageShouldBeOpened(){
         amazonPage.amazonLogo.shouldBe(visible);
         amazonPage.language.shouldHave(text("EN"));
@@ -55,7 +54,7 @@ public class UiTesting {
 
     @Test
     @TestCaseId("UI.AmazonPage.2")
-    @Stories("User should be able to change language on the main Amazon page")
+    @Story("User should be able to change language on the main Amazon page")
     public void languageCanBeChanged(){
         amazonPage.language.shouldBe(visible).hover();
         amazonPage.changeLanguage("de-DE");
@@ -65,7 +64,7 @@ public class UiTesting {
 
     @Test
     @TestCaseId("UI.AmazonPage.3")
-    @Stories("User should be able to navigate through Top menu")
+    @Story("User should be able to navigate through Top menu")
     public void navigationThroughTopMenu(){
         amazonPage.todayDealTab.shouldBe(visible).click();
         amazonPage.todayDealTitle.shouldBe(visible);
@@ -85,6 +84,5 @@ public class UiTesting {
         amazonPage.amazonLogo.shouldBe(visible).click();
         amazonPage.sellTitle.shouldNotBe(visible);
     }
-
 
 }

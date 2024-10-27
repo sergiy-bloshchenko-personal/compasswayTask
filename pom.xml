@@ -5,150 +5,77 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>CompasswayTask</artifactId>
+    <artifactId>compassway-task</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <surefire>3.5.1</surefire>
-        <parallel>classes</parallel>
-        <threads>10</threads>
+        <selenium.hub.url>http://local.example.com:4444/wd/hub</selenium.hub.url>
+        <browser>chrome</browser>
+        <holdBrowserOpen>false</holdBrowserOpen>
+        <webdriver.gecko.driver>${user.home}/bin/geckodriver</webdriver.gecko.driver>
+        <webdriver.chrome.driver>${user.home}/bin/chromedriver</webdriver.chrome.driver>
+        <surefire.argLine>-Dfile.encoding=windows-1251</surefire.argLine>
+        <selenium.version>4.25.0</selenium.version>
+        <selenide.version>7.5.1</selenide.version>
         <aspectjweaver>1.9.9</aspectjweaver>
-        <ignoreDriversChmod>false</ignoreDriversChmod>
-        <allure.version>2.29.0</allure.version>
+        <surefire>3.5.1</surefire>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.17.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20231013</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>junit</groupId>-->
-<!--            <artifactId>junit</artifactId>-->
-<!--            <version>4.13.2</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>selenide</artifactId>
-            <version>7.5.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.codeborne</groupId>
-            <artifactId>selenide</artifactId>
-            <version>7.5.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-maven-plugin</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-junit-adaptor</artifactId>
-            <version>1.5.4</version>
-        </dependency>
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit5</artifactId>
-            <version>${allure.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-bom</artifactId>
-            <version>${allure.version}</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-maven</artifactId>
-            <version>2.14.0</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>ru.yandex.qatools.allure</groupId>-->
-<!--            <artifactId>allure-java-annotations</artifactId>-->
-<!--            <version>1.5.4</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-commons</artifactId>
-            <version>1.5.4</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+<!--    <prerequisites>-->
+<!--        <maven>3.3</maven>-->
+<!--    </prerequisites>-->
+
+    <profiles>
+        <profile>
+            <id>chrome</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <browser>chrome</browser>
+            </properties>
+        </profile>
+        <profile>
+            <id>firefox</id>
+            <properties>
+                <browser>firefox</browser>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-                <includes>
-                    <include>**/*.properties</include>
-                </includes>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>false</filtering>
-                <excludes>
-                    <exclude>/webdrivers/*</exclude>
-                    <exclude>/testData/vms_import/*</exclude>
-                </excludes>
-            </resource>
-        </resources>
+        <defaultGoal>clean package</defaultGoal>
         <plugins>
-            <!-- maven-surefire-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire}</version>
                 <configuration>
-                    <parallel>classes</parallel>
-                    <!--                    <threadCount>${threads}</threadCount>-->
-                    <threadCountClasses>${threads}</threadCountClasses>
-                    <!--                    <threadCountMethods>${threads}</threadCountMethods>-->
-                    <rerunFailingTestsCount>0</rerunFailingTestsCount>
-                    <perCoreThreadCount>false</perCoreThreadCount>
                     <testSourceDirectory>src/test</testSourceDirectory>
-                    <testFailureIgnore>true</testFailureIgnore>
-                    <!--                    <forkCount>1</forkCount>-->
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <!--                    <argLine>${project.build.sourceEncoding}</argLine>-->
-                    <argLine>-Dfile.encoding=windows-1251</argLine>
-                    <includes>
-                        <include>**/*Testing.java</include>
-                    </includes>
+                    <systemPropertyVariables>
+                        <browser>${browser}</browser>
+                        <holdBrowserOpen>${holdBrowserOpen}</holdBrowserOpen>
+<!--                        <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>-->
+<!--                        <webdriver.gecko.driver>${webdriver.gecko.driver}</webdriver.gecko.driver>-->
+                    </systemPropertyVariables>
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectjweaver}/aspectjweaver-${aspectjweaver}.jar
                     </argLine>
-                    <properties>
-                        <property>
-                            <name>listener</name>
-                            <value>ru.yandex.qatools.allure.junit.AllureRunListener</value>
-                        </property>
-                    </properties>
+<!--                    <properties>-->
+<!--                        <property>-->
+<!--                            <name>listener</name>-->
+<!--                            <value>ru.yandex.qatools.allure.junit.AllureRunListener</value>-->
+<!--                        </property>-->
+<!--                    </properties>-->
+
+                    <includes>
+                        <include>**/*Testing.java</include>
+                    </includes>
+
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -164,37 +91,13 @@
                 </dependencies>
             </plugin>
 
-            <!-- maven-antrun-plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>process-classes</id>
-                        <phase>process-classes</phase>
-                        <configuration>
-                            <target if="${ignoreDriversChmod}">
-                                <chmod file="target/classes/webdrivers/*_linux" perm="755"/>
-                                <chmod file="target/classes/webdrivers/*_mac" perm="755"/>
-                            </target>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- maven-compiler-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <!--                    <compilerArgs>&#45;&#45;enable-preview</compilerArgs>-->
                 </configuration>
             </plugin>
@@ -205,7 +108,19 @@
                 <artifactId>allure-maven</artifactId>
                 <version>2.14.0</version>
             </plugin>
+
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${surefire}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
     </build>
 
     <reporting>
@@ -243,4 +158,63 @@
         </plugins>
     </reporting>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.codeborne</groupId>
+            <artifactId>selenide</artifactId>
+            <version>${selenide.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.allure</groupId>
+            <artifactId>allure-maven-plugin</artifactId>
+            <version>2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.allure</groupId>
+            <artifactId>allure-junit-adaptor</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.yandex.qatools.allure</groupId>
+            <artifactId>allure-java-annotations</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-junit5</artifactId>
+            <version>2.29.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <!-- SourceForge -->
+        <repository>
+            <id>SourceForge</id>
+            <url>http://csvjdbc.sourceforge.net/maven2</url>
+        </repository>
+        <!-- jitpack.io -->
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 </project>

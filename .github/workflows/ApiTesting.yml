@@ -1,0 +1,85 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
+
+name: Compassway testing
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"
+
+jobs:
+  checkoutTesting:
+    name: Compassway testing
+    runs-on: ubuntu-latest
+    timeout-minutes: 1000
+
+    env:
+      branch: 'main'
+      category: 'ApiTesting'
+      area: 'compassway'
+      report: 'TEST-*.compassway.*.xml'
+      threads: 1
+      remoteSessionTimeout: '300'
+      driver: 'WebDriver'
+      profile: 'qa-dev'
+      DEV_TIME_ZONE: 'Europe/Kyiv'
+      DEV_HEADER_SECRET: ${{secrets.GHA_DEV_HTTP_ACCESS_SECRET}}
+
+    steps:
+      - uses: szenius/set-timezone@v1.0
+        with:
+          timezoneLinux: ${{env.DEV_TIME_ZONE}}
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{env.branch}}
+
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'oracle'
+          cache: maven
+
+      - name: Run Tests by maven
+        run: mvn clean test -Dtest=${{env.category}}
+      
+      - name: Generate Allure report files
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        id: allure-report
+        with:
+          allure_results: target/allure-results
+          gh_pages: gh-pages
+          allure_report: allure-report
+          allure_history: allure-history
+
+      - name: Update URL in report
+        run: sudo sed -i 's|\(URL=\).*|'"URL=https://nentgroup.github.io/lexx/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
+
+      - name: Deploy report to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: allure-history
+          destination_dir: ${{env.area}}
+          keep_files: true
+          cname: https://github.com/sergiy-bloshchenko-personal/compasswayTask
+
+      - name: Post the link to the report
+        if: always()
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: 'Test report'
+          state: 'success'
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          target_url: sergiy-bloshchenko-personal/compasswayTask/github-allure-history/${{github.run_number}}
+          
+      - name: Publish JUnit Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: ${{env.area}} JUnit Report
+          path: target/surefire-reports/${{env.report}}
+          reporter: 'java-junit'
+          fail-on-error: 'true'

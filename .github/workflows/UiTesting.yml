@@ -16,7 +16,7 @@ jobs:
 
     env:
       branch: 'main'
-      category: 'com.viaplaynew.categories.Env_Qadev && com.viaplaynew.categories.App_Checkout'
+      category: 'UiTesting'
       area: 'compassway'
       report: 'TEST-*.compassway.*.xml'
       threads: 1
@@ -37,15 +37,12 @@ jobs:
 
       - uses: actions/setup-java@v4
         with:
-          java-version: '22'
+          java-version: '21'
           distribution: 'oracle'
           cache: maven
 
       - name: Run Tests by maven
-        run: | 
-          pwd
-          ls -l
-          mvn -B clean package --file pom.xml -Dthreads=${{env.threads}} -DdriverType="${{env.driver}}"
+        run: mvn clean test -Dtest=${{env.category}}
       
       - name: Generate Allure report files
         uses: simple-elf/allure-report-action@master
