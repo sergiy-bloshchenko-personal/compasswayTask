@@ -71,6 +71,7 @@ jobs:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: 'Test report'
           state: 'success'
+          owner: 'sergiy.bloshchenko@gmail.com'
           sha: ${{github.event.pull_request.head.sha || github.sha}}
           target_url: sergiy-bloshchenko-personal/compasswayTask/github-allure-history/${{github.run_number}}
           
