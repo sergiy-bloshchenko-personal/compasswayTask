@@ -22,7 +22,6 @@ jobs:
       threads: 1
       remoteSessionTimeout: '300'
       DEV_TIME_ZONE: 'Europe/Kyiv'
-      DEV_HEADER_SECRET: ${{secrets.GHA_DEV_HTTP_ACCESS_SECRET}}
 
     steps:
       - uses: szenius/set-timezone@v1.0
@@ -58,7 +57,7 @@ jobs:
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
+          github_token: ${{secrets.DEPEND_BOT}}
           publish_dir: allure-history
           destination_dir: ${{env.area}}
           keep_files: true
@@ -68,7 +67,7 @@ jobs:
         if: always()
         uses: Sibz/github-status-action@v1
         with:
-          authToken: ${{secrets.GITHUB_TOKEN}}
+          authToken: ${{secrets.DEPEND_BOT}}
           context: 'Test report'
           state: 'success'
           owner: 'sergiy.bloshchenko@gmail.com'
