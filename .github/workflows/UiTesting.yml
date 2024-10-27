@@ -54,7 +54,7 @@ jobs:
           allure_history: allure-history
 
       - name: Update URL in report
-        run: sudo sed -i 's|\(URL=\).*|'"URL=https://nentgroup.github.io/lexx/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
+        run: sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/sergiy-bloshchenko-personal/compasswayTask/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
 
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
