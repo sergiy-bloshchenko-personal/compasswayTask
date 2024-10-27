@@ -60,13 +60,13 @@ jobs:
         run: |
           pwd
           ls -l
-          ls -l target/allure-results
+          ls -l target
           sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/sergiy-bloshchenko-personal/compasswayTask/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
 
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{secrets.DEPEND_BOT}}
+          github_token: ${{secrets.ENV_SECRETS}}
           publish_dir: allure-history
           destination_dir: ${{env.area}}
           keep_files: true
@@ -75,7 +75,7 @@ jobs:
       - name: Post the link to the report
         uses: Sibz/github-status-action@v1
         with:
-          authToken: ${{secrets.DEPEND_BOT}}
+          authToken: ${{secrets.ENV_SECRETS}}
           context: 'Test report'
           state: 'success'
           owner: 'sergiy.bloshchenko@gmail.com'
