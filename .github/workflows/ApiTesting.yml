@@ -66,7 +66,7 @@ jobs:
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{secrets.ENV_SECRETS}}
+          github_token: ${{secrets.GITHUB_TOKEN}}
           publish_dir: allure-history
           destination_dir: ${{env.area}}
           keep_files: true
@@ -75,7 +75,7 @@ jobs:
       - name: Post the link to the report
         uses: Sibz/github-status-action@v1
         with:
-          authToken: ${{secrets.ENV_SECRETS}}
+          authToken: ${{secrets.GITHUB_TOKEN}}
           context: 'Test report'
           state: 'success'
           owner: 'sergiy.bloshchenko@gmail.com'
