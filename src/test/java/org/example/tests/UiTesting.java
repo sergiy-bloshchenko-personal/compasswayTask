@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import io.qameta.allure.Story;
-import ru.yandex.qatools.allure.annotations.TestCaseId;
+import io.qameta.allure.TmsLink;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.*;
@@ -44,7 +44,7 @@ public class UiTesting {
     }
     
     @Test
-    @TestCaseId("UI.AmazonPage.1")
+    @TmsLink("UI.AmazonPage.1")
     @Story("User should be able to navigate to the main Amazon page with default language EN")
     public void mainPageShouldBeOpened(){
         amazonPage.amazonLogo.shouldBe(visible);
@@ -53,7 +53,7 @@ public class UiTesting {
     }
 
     @Test
-    @TestCaseId("UI.AmazonPage.2")
+    @TmsLink("UI.AmazonPage.2")
     @Story("User should be able to change language on the main Amazon page")
     public void languageCanBeChanged(){
         amazonPage.language.shouldBe(visible).hover();
@@ -63,7 +63,7 @@ public class UiTesting {
     }
 
     @Test
-    @TestCaseId("UI.AmazonPage.3")
+    @TmsLink("UI.AmazonPage.3")
     @Story("User should be able to navigate through Top menu")
     public void navigationThroughTopMenu(){
         amazonPage.todayDealTab.shouldBe(visible).click();

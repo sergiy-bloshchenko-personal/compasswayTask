@@ -7,6 +7,8 @@ import org.example.helpers.RestHelper;
 import java.util.Base64;
 import java.util.Objects;
 
+import static org.junit.Assert.assertEquals;
+
 public class User {
     public int id;
     public String username;
@@ -37,6 +39,15 @@ public class User {
 
     public static User getQaUser(){
         return RestHelper.getUsersCurrent(new User("qa_test_user", "QM8dvwgR457D4NL"));
+    }
+
+    public static User createNewUser(){
+        User newUser = new User();
+        Response createNewUser = RestHelper.postUsers(getQaUser(),newUser);
+        assertEquals("Status code is not correct on user '"+newUser.username+"' creation " + createNewUser.asString(), 201, createNewUser.statusCode());
+        User new_user = createNewUser.as(User.class);
+        new_user.password = newUser.password;
+        return new_user;
     }
 
     @Override

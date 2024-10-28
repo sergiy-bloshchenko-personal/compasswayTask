@@ -78,7 +78,7 @@ jobs:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: 'Test report'
           state: 'success'
-          owner: 'github.sergiy-bloshchenko-personal'
+          owner: 'sergiy-bloshchenko-personal'
           sha: ${{github.event.pull_request.head.sha || github.sha}}
           target_url: https://sergiy-bloshchenko-personal.github.io/compasswayTask/${{env.area}}/${{github.run_number}}
           

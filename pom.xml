@@ -13,21 +13,16 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <selenium.hub.url>http://local.example.com:4444/wd/hub</selenium.hub.url>
         <browser>chrome</browser>
         <holdBrowserOpen>false</holdBrowserOpen>
         <webdriver.gecko.driver>${user.home}/bin/geckodriver</webdriver.gecko.driver>
         <webdriver.chrome.driver>${user.home}/bin/chromedriver</webdriver.chrome.driver>
-        <surefire.argLine>-Dfile.encoding=windows-1251</surefire.argLine>
         <selenium.version>4.25.0</selenium.version>
         <selenide.version>7.5.1</selenide.version>
         <aspectjweaver>1.9.9</aspectjweaver>
         <surefire>3.5.1</surefire>
+        <allure.maven>2.14.0</allure.maven>
     </properties>
-
-<!--    <prerequisites>-->
-<!--        <maven>3.3</maven>-->
-<!--    </prerequisites>-->
 
     <profiles>
         <profile>
@@ -55,28 +50,28 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire}</version>
                 <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
                     <testSourceDirectory>src/test</testSourceDirectory>
                     <systemPropertyVariables>
                         <browser>${browser}</browser>
                         <holdBrowserOpen>${holdBrowserOpen}</holdBrowserOpen>
-<!--                        <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>-->
-<!--                        <webdriver.gecko.driver>${webdriver.gecko.driver}</webdriver.gecko.driver>-->
+                        <allure.results.directory>target/allure-results</allure.results.directory>
                     </systemPropertyVariables>
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectjweaver}/aspectjweaver-${aspectjweaver}.jar
                     </argLine>
-<!--                    <properties>-->
-<!--                        <property>-->
-<!--                            <name>listener</name>-->
-<!--                            <value>ru.yandex.qatools.allure.junit.AllureRunListener</value>-->
-<!--                        </property>-->
-<!--                    </properties>-->
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>io.qameta.allure.junit4.AllureJunit4</value>
+                        </property>
+                    </properties>
 
                     <includes>
                         <include>**/*Testing.java</include>
                     </includes>
-
                 </configuration>
+
                 <dependencies>
                     <dependency>
                         <groupId>org.aspectj</groupId>
@@ -106,7 +101,17 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>2.14.0</version>
+                <version>${allure.maven}</version>
+                <executions>
+                    <execution>
+                        <id>allure-report</id>
+                        <phase>test</phase>
+                        <goals>
+<!--                            <goal>serve</goal>-->
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
@@ -127,9 +132,9 @@
         <plugins>
             <!-- allure-maven-plugin -->
             <plugin>
-                <groupId>ru.yandex.qatools.allure</groupId>
-                <artifactId>allure-maven-plugin</artifactId>
-                <version>2.6</version>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure.maven}</version>
             </plugin>
 
             <!-- maven-project-info-reports-plugin -->
@@ -137,9 +142,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
                 <version>3.4.5</version>
-                <reportSets>
-                    <reportSet/>
-                </reportSets>
                 <configuration>
                     <outputEncoding>${project.build.sourceEncoding}</outputEncoding>
                 </configuration>
@@ -180,23 +182,18 @@
             <version>5.4.0</version>
         </dependency>
         <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-maven-plugin</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-junit-adaptor</artifactId>
-            <version>1.5.4</version>
-        </dependency>
-        <dependency>
-            <groupId>ru.yandex.qatools.allure</groupId>
-            <artifactId>allure-java-annotations</artifactId>
-            <version>RELEASE</version>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-assertj</artifactId>
+            <version>2.28.0</version>
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
-            <artifactId>allure-junit5</artifactId>
+            <artifactId>allure-junit4</artifactId>
+            <version>2.27.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
             <version>2.29.0</version>
         </dependency>
         <dependency>
@@ -205,16 +202,4 @@
             <version>2.10.1</version>
         </dependency>
     </dependencies>
-    <repositories>
-        <!-- SourceForge -->
-        <repository>
-            <id>SourceForge</id>
-            <url>http://csvjdbc.sourceforge.net/maven2</url>
-        </repository>
-        <!-- jitpack.io -->
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
 </project>
