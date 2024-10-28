@@ -63,7 +63,7 @@ jobs:
           publish_dir: allure-history
           destination_dir: ${{env.area}}
           keep_files: true
-          cname: https://github.com/${{env.username}}/${{env.project}}
+          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
 
 #      - name: Post the link to the report
 #        uses: Sibz/github-status-action@v1
@@ -79,7 +79,6 @@ jobs:
         uses: dorny/test-reporter@v1
         with:
           name: ${{env.area}} JUnit Report
-          path: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
-#          target/surefire-reports/${{env.report}}
+          path: target/surefire-reports/${{env.report}}
           reporter: 'java-junit'
           fail-on-error: 'true'
