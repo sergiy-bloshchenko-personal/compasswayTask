@@ -44,12 +44,6 @@ jobs:
       - name: Run Tests by maven
         run: mvn clean test -Dtest=${{env.category}}
 
-#      - name: Generate Allure Report
-#        run: |
-#          pwd
-#          ls -l
-#          mvn allure:report
-
       - name: Generate Allure report files
         uses: simple-elf/allure-report-action@master
         id: allure-report
@@ -60,11 +54,7 @@ jobs:
           allure_history: allure-history
 
       - name: Update URL in report
-        run: |
-          pwd
-          ls -l
-          ls -l target
-          sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/${{env.username}}/${{env.project}}/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
+        run: sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/${{env.username}}/${{env.project}}/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
 
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -81,7 +71,7 @@ jobs:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: "Test report"
           state: "success"
-          owner: ${{env.username}}
+          owner: 'sergiyb'
           sha: ${{github.event.pull_request.head.sha || github.sha}}
           target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           

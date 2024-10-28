@@ -23,7 +23,8 @@ jobs:
       remoteSessionTimeout: '300'
       profile: 'chrome'
       DEV_TIME_ZONE: 'Europe/Kyiv'
-      DEV_HEADER_SECRET: ${{secrets.GHA_DEV_HTTP_ACCESS_SECRET}}
+      username: 'sergiy-bloshchenko-personal'
+      project: 'compasswayTask'
 
     steps:
       - uses: szenius/set-timezone@v1.0
@@ -54,7 +55,7 @@ jobs:
           allure_history: allure-history
 
       - name: Update URL in report
-        run: sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/sergiy-bloshchenko-personal/compasswayTask/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
+        run: sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/${{env.username}}/${{env.project}}/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
 
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -63,7 +64,7 @@ jobs:
           publish_dir: allure-history
           destination_dir: ${{env.area}}
           keep_files: true
-          cname: https://github.com/sergiy-bloshchenko-personal/compasswayTask
+          cname: https://github.com/${{env.username}}/${{env.project}}
 
       - name: Post the link to the report
         if: always()
@@ -72,8 +73,9 @@ jobs:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: 'Test report'
           state: 'success'
+          owner: 'sergiyb'
           sha: ${{github.event.pull_request.head.sha || github.sha}}
-          target_url: sergiy-bloshchenko-personal/compasswayTask/github-allure-history/${{github.run_number}}
+          target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           
       - name: Publish JUnit Report
         uses: dorny/test-reporter@v1
