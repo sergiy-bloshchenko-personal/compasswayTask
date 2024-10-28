@@ -1,0 +1,7 @@
+"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
+"","","User should get an email by emailID","0","0","1","0","0"
+"","","Should be possible to create new user","0","0","1","0","0"
+"","","New user should get empty list of emails","0","0","1","0","0"
+"","","User should get some list of emails that were sent previously","0","0","1","0","0"
+"","","User should be able to delete an email by emailID","0","0","1","0","0"
+"","","Should not be possible to create existing user","0","0","1","0","0"
