@@ -29,10 +29,8 @@ public class UiTesting {
         @Override
         protected void starting(Description description) {
             System.out.println("Starting " + description.getMethodName() + " test");
-            //commit this if running on windows
-//        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
             Configuration.browser = "chrome";
-            Configuration.assertionMode = AssertionMode.STRICT;
+//            Configuration.assertionMode = AssertionMode.STRICT;
             Configuration.browserSize = "1920x1080";
             Configuration.headless = false;
 
@@ -62,14 +60,19 @@ public class UiTesting {
 
         @Override
         protected void failed(Throwable e, Description description) {
-            captureScreenShot();
+            screenshot();
             System.out.println(description.getMethodName() + " has failed.");
+            System.out.println(e.getMessage());
             closeWebDriver();
         }
     };
 
     @Attachment()
-    public byte[] captureScreenShot() {
+    public byte[] screenshot() {
+        return captureScreenShot();
+    }
+
+    private byte[] captureScreenShot() {
         try {
             return Base64.getDecoder().decode(Selenide.screenshot(OutputType.BASE64));
         } catch (Exception e) {
