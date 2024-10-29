@@ -42,10 +42,12 @@ public class UiTesting {
             if (captchaPage.onclick.exists()) captchaPage.onclick.click();
         }
 
-        if (amazonPage.modal.should(Condition.appear, Duration.ofSeconds(3)).exists()) {
-            amazonPage.modalDismissBtn.click();
-            amazonPage.modal.shouldNotBe(visible);
-        }
+        try {
+            if (amazonPage.modal.exists()) {
+                amazonPage.modalDismissBtn.click();
+                amazonPage.modal.shouldNotBe(visible);
+            }
+        } catch (Exception e){}
     }
 
     @After
@@ -53,8 +55,8 @@ public class UiTesting {
         closeWebDriver();
     }
 
-    @Rule
-    public ScreenShooter makeScreenshotOnFailure = ScreenShooter.failedTests();
+//    @Rule
+//    public ScreenShooter makeScreenshotOnFailure = ScreenShooter.failedTests();
 
 //    @Attachment
 //    public byte[] screenshot() {
