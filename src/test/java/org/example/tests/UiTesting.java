@@ -2,13 +2,18 @@ package org.example.tests;
 
 import com.codeborne.selenide.AssertionMode;
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import org.example.pages.AmazonPage;
 import org.example.pages.CaptchaPage;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import io.qameta.allure.Story;
 import io.qameta.allure.TmsLink;
+import org.junit.rules.TestRule;
+import org.junit.rules.TestWatcher;
+import org.junit.runner.Description;
+import org.openqa.selenium.OutputType;
+import java.util.Base64;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.*;
@@ -17,32 +22,57 @@ public class UiTesting {
     public CaptchaPage captchaPage;
     public AmazonPage amazonPage;
 
-    @Before
-    public void init(){
-        //commit this if running on windows
+    @Rule
+    public TestRule screenShotRule = new TestWatcher() {
+
+        @Override
+        protected void starting(Description description) {
+            System.out.println("Starting " + description.getMethodName() + " test");
+            //commit this if running on windows
 //        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-        Configuration.browser = "chrome";
-        Configuration.assertionMode = AssertionMode.STRICT;
-        Configuration.browserSize = "1920x1080";
-        Configuration.headless = false;
+            Configuration.browser = "chrome";
+            Configuration.assertionMode = AssertionMode.STRICT;
+            Configuration.browserSize = "1920x1080";
+            Configuration.headless = false;
 
-        open("https://www.amazon.com/");
-        captchaPage = new CaptchaPage();
-        amazonPage = new AmazonPage();
+            open("https://www.amazon.com/");
+            captchaPage = new CaptchaPage();
+            amazonPage = new AmazonPage();
 
-        if (captchaPage.chaptchaInput.exists()) {
-            captchaPage.chaptchaInput.shouldBe(visible);
-            if (captchaPage.onclick.exists()) captchaPage.onclick.click();
+            if (captchaPage.chaptchaInput.exists()) {
+                captchaPage.chaptchaInput.shouldBe(visible);
+                if (captchaPage.onclick.exists()) captchaPage.onclick.click();
+            }
+
+            amazonPage.modal.shouldBe(visible);
+            amazonPage.modalDismissBtn.click();
+            amazonPage.modal.shouldNotBe(visible);
         }
 
-        amazonPage.modal.shouldBe(visible);
-        amazonPage.modalDismissBtn.click();
-        amazonPage.modal.shouldNotBe(visible);
-    }
+        @Override
+        protected void finished(Description description) {
+        }
 
-    @After
-    public void closeDriver(){
-        closeWebDriver();
+        @Override
+        protected void succeeded(Description description) {
+            System.out.println(description.getMethodName() + " has passed.");
+            closeWebDriver();
+        }
+
+        @Override
+        protected void failed(Throwable e, Description description) {
+            captureScreenShot();
+            System.out.println(description.getMethodName() + " has failed.");
+            closeWebDriver();
+        }
+    };
+
+    private byte[] captureScreenShot() {
+        try {
+            return Base64.getDecoder().decode(Selenide.screenshot(OutputType.BASE64));
+        } catch (Exception e) {
+            return ("Can not parse screen shot data \n" + e).getBytes();
+        }
     }
     
     @Test
