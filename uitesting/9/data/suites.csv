@@ -1,4 +1,0 @@
-"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"broken","Tue Oct 29 00:59:01 GMT 2024","Tue Oct 29 00:59:01 GMT 2024","166","","org.example.tests.UiTesting","","org.example.tests.UiTesting","navigationThroughTopMenu","navigationThroughTopMenu",""
-"broken","Tue Oct 29 00:58:57 GMT 2024","Tue Oct 29 00:59:00 GMT 2024","3898","","org.example.tests.UiTesting","","org.example.tests.UiTesting","languageCanBeChanged","languageCanBeChanged",""
-"broken","Tue Oct 29 00:59:01 GMT 2024","Tue Oct 29 00:59:01 GMT 2024","170","","org.example.tests.UiTesting","","org.example.tests.UiTesting","mainPageShouldBeOpened","mainPageShouldBeOpened",""
