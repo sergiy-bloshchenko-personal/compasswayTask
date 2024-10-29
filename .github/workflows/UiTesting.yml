@@ -11,7 +11,7 @@ on:
 jobs:
   checkoutTesting:
     name: UI testing
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     timeout-minutes: 1000
 
     env:
