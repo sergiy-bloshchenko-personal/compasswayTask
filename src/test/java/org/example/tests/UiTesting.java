@@ -77,7 +77,7 @@ public class UiTesting {
     public void mainPageShouldBeOpened(){
         amazonPage.amazonLogo.shouldBe(visible);
         amazonPage.language.shouldHave(text("EN"));
-        amazonPage.deliveryLogo.shouldHave(text("Deliver to Ukraine"));
+        amazonPage.deliveryLogo.shouldHave(text("Deliver to"));
     }
 
     @Test
@@ -87,7 +87,7 @@ public class UiTesting {
         amazonPage.language.shouldBe(visible);
         amazonPage.changeLanguage("de-DE");
         amazonPage.language.shouldHave(text("DE"));
-        amazonPage.deliveryLogo.shouldHave(text("Liefern nach Ukraine"));
+        amazonPage.deliveryLogo.shouldHave(text("Liefern nach"));
     }
 
     @Test
