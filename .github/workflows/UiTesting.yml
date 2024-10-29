@@ -25,6 +25,7 @@ jobs:
       DEV_TIME_ZONE: 'Europe/Kyiv'
       username: 'sergiy-bloshchenko-personal'
       project: 'compasswayTask'
+      driver: 'WebDriver'
 
     steps:
       - uses: szenius/set-timezone@v1.0
