@@ -40,8 +40,40 @@ jobs:
           java-version: '21'
           distribution: 'oracle'
 
-      - name: Run Tests by maven
-        run: mvn clean test -Dtest=${{env.category}}
+      - uses: browser-actions/setup-chrome@latest
+      - uses: nanasess/setup-chromedriver@v2
+
+#      - name: Run Tests by maven
+#        run: |
+#          if [ "${{env.driver}}" == "WebDriver" ]; then
+#            if [ ! -d "src/main/resources/webdrivers" ]; then
+#              mkdir src/main/resources/webdrivers
+#            fi
+#            sudo cp /usr/local/share/chrome_driver/chromedriver src/main/resources/webdrivers
+#            sudo chown -R runner:docker src/main/resources/webdrivers
+#            sudo ls -l src/main/resources/webdrivers
+#            if [ -f "src/main/resources/webdrivers/chromedriver_linux" ]; then
+#              rm src/main/resources/webdrivers/chromedriver_linux
+#            fi
+#            mv src/main/resources/webdrivers/chromedriver src/main/resources/webdrivers/chromedriver_linux
+#            sudo pwd
+#            sudo ls -l
+#            sudo ls -l src
+#            sudo ls -l src/main
+#            sudo ls -l src/main/resources
+#            sudo ls -l src/main/resources/webdrivers
+#            mvn -B clean compile --file pom.xml
+#            sudo ls -l target
+#            sudo ls -l target/classes
+#            if [ ! -d "target/classes/webdrivers" ]; then
+#              mkdir target/classes/webdrivers
+#              cp src/main/resources/webdrivers/chromedriver_linux target/classes/webdrivers
+#            fi
+#            chmod +x target/classes/webdrivers/chromedriver_linux
+#            sudo ls -l target/classes/webdrivers
+#          fi
+#
+#          mvn clean test -Dtest=${{env.category}}
 
       
 #      - name: Generate Allure report files
@@ -56,14 +88,14 @@ jobs:
 #      - name: Update URL in report
 #        run: sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/${{env.username}}/${{env.project}}/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
 
-      - name: Deploy report to Github Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          publish_dir: target/site/allure-maven-plugin
-          destination_dir: ${{env.area}}
-          keep_files: true
-          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
+#      - name: Deploy report to Github Pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{secrets.GITHUB_TOKEN}}
+#          publish_dir: target/site/allure-maven-plugin
+#          destination_dir: ${{env.area}}
+#          keep_files: true
+#          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
 
 #      - name: Post the link to the report
 #        if: always()
