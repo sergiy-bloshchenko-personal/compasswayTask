@@ -1,6 +1,7 @@
 package org.example.tests;
 
 import com.codeborne.selenide.AssertionMode;
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.junit.ScreenShooter;
@@ -15,6 +16,7 @@ import io.qameta.allure.Story;
 import io.qameta.allure.TmsLink;
 import org.openqa.selenium.OutputType;
 
+import java.time.Duration;
 import java.util.Base64;
 
 import static com.codeborne.selenide.Selenide.*;
@@ -26,7 +28,6 @@ public class UiTesting {
 
     @Before
     public void init(){
-//        System.setProperty("webdriver.chrome.driver","/usr/local/bin/chromedriver");
         Configuration.browser = "chrome";
         Configuration.assertionMode = AssertionMode.STRICT;
         Configuration.browserSize = "1920x1080";
@@ -41,9 +42,10 @@ public class UiTesting {
             if (captchaPage.onclick.exists()) captchaPage.onclick.click();
         }
 
-        amazonPage.modal.shouldBe(visible);
-        amazonPage.modalDismissBtn.click();
-        amazonPage.modal.shouldNotBe(visible);
+        if (amazonPage.modal.should(Condition.appear, Duration.ofSeconds(3)).exists()) {
+            amazonPage.modalDismissBtn.click();
+            amazonPage.modal.shouldNotBe(visible);
+        }
     }
 
     @After
@@ -51,21 +53,22 @@ public class UiTesting {
         closeWebDriver();
     }
 
-//    @Rule
-//    public ScreenShooter makeScreenshotOnFailure = ScreenShooter.failedTests();
+    @Rule
+    public ScreenShooter makeScreenshotOnFailure = ScreenShooter.failedTests();
 
-    @Attachment
-    public byte[] screenshot() {
-        return captureScreenShot();
-    }
+//    @Attachment
+//    public byte[] screenshot() {
+//        return captureScreenShot();
+//    }
+//
+//    private byte[] captureScreenShot() {
+//        try {
+//            return Base64.getDecoder().decode(Selenide.screenshot(OutputType.BYTES));
+//        } catch (Exception e) {
+//            return ("Can not parse screen shot data \n" + e).getBytes();
+//        }
+//    }
 
-    private byte[] captureScreenShot() {
-        try {
-            return Base64.getDecoder().decode(Selenide.screenshot(OutputType.BYTES));
-        } catch (Exception e) {
-            return ("Can not parse screen shot data \n" + e).getBytes();
-        }
-    }
     @Test
     @TmsLink("UI.AmazonPage.1")
     @Story("User should be able to navigate to the main Amazon page with default language EN")

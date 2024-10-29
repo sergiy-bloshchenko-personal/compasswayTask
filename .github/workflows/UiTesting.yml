@@ -41,23 +41,6 @@ jobs:
           java-version: '21'
           distribution: 'oracle'
 
-#      - uses: browser-actions/setup-chrome@latest
-#      - uses: nanasess/setup-chromedriver@v2
-
-#      - uses: Xotabu4/selenoid-github-action@v2
-#        with:
-#          selenoid-start-arguments: --vnc --args "-timeout ${{env.remoteSessionTimeout}}s -limit ${{env.threads}}"
-#
-#      - name: Install and run selenoid
-#        uses: n-ton4/selenoid-github-action@master
-#        id: start-selenoid
-#        continue-on-error: false
-#        with:
-#          version: 1.10.1
-#          args: -timeout ${{env.remoteSessionTimeout}}s -limit ${{env.threads}}
-#          browsers: chrome;firefox
-#          last-versions: 1
-
       - name: Run Tests by maven
         run: mvn clean test -Dtest=${{env.category}}
 
