@@ -11,7 +11,7 @@ on:
 jobs:
   checkoutTesting:
     name: UI testing
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     timeout-minutes: 1000
 
     env:
@@ -44,19 +44,19 @@ jobs:
 #      - uses: browser-actions/setup-chrome@latest
 #      - uses: nanasess/setup-chromedriver@v2
 
-      - uses: Xotabu4/selenoid-github-action@v2
-        with:
-          selenoid-start-arguments: --vnc --args "-timeout ${{env.remoteSessionTimeout}}s -limit ${{env.threads}}"
-
-      - name: Install and run selenoid
-        uses: n-ton4/selenoid-github-action@master
-        id: start-selenoid
-        continue-on-error: false
-        with:
-          version: 1.10.1
-          args: -timeout ${{env.remoteSessionTimeout}}s -limit ${{env.threads}}
-          browsers: chrome;firefox
-          last-versions: 1
+#      - uses: Xotabu4/selenoid-github-action@v2
+#        with:
+#          selenoid-start-arguments: --vnc --args "-timeout ${{env.remoteSessionTimeout}}s -limit ${{env.threads}}"
+#
+#      - name: Install and run selenoid
+#        uses: n-ton4/selenoid-github-action@master
+#        id: start-selenoid
+#        continue-on-error: false
+#        with:
+#          version: 1.10.1
+#          args: -timeout ${{env.remoteSessionTimeout}}s -limit ${{env.threads}}
+#          browsers: chrome;firefox
+#          last-versions: 1
 
       - name: Run Tests by maven
         run: mvn clean test -Dtest=${{env.category}}
@@ -73,14 +73,14 @@ jobs:
 #      - name: Update URL in report
 #        run: sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/${{env.username}}/${{env.project}}/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
 #
-#      - name: Deploy report to Github Pages
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          github_token: ${{secrets.GITHUB_TOKEN}}
-#          publish_dir: target/site/allure-maven-plugin
-#          destination_dir: ${{env.area}}
-#          keep_files: true
-#          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
+      - name: Deploy report to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          publish_dir: target/site/allure-maven-plugin
+          destination_dir: ${{env.area}}
+          keep_files: true
+          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
 
 #      - name: Post the link to the report
 #        if: always()
