@@ -43,12 +43,13 @@ jobs:
       - uses: browser-actions/setup-chrome@latest
       - uses: nanasess/setup-chromedriver@v2
 
-#      - name: Run Tests by maven
-#        run: |
-#          if [ "${{env.driver}}" == "WebDriver" ]; then
-#            if [ ! -d "src/main/resources/webdrivers" ]; then
-#              mkdir src/main/resources/webdrivers
-#            fi
+      - name: Run Tests by maven
+        run: |
+          if [ "${{env.driver}}" == "WebDriver" ]; then
+            if [ ! -d "src/main/resources/webdrivers" ]; then
+              mkdir src/main/resources/webdrivers
+            fi
+            sudo ls -l /usr/local/bin
 #            sudo cp /usr/local/share/chrome_driver/chromedriver src/main/resources/webdrivers
 #            sudo chown -R runner:docker src/main/resources/webdrivers
 #            sudo ls -l src/main/resources/webdrivers
@@ -71,7 +72,7 @@ jobs:
 #            fi
 #            chmod +x target/classes/webdrivers/chromedriver_linux
 #            sudo ls -l target/classes/webdrivers
-#          fi
+          fi
 #
 #          mvn clean test -Dtest=${{env.category}}
 
