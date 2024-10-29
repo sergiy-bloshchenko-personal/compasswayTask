@@ -42,7 +42,7 @@ jobs:
 #          cache: maven
 
       - uses: browser-actions/setup-chrome@latest
-      - uses: nanasess/setup-chromedriver@v2
+#      - uses: nanasess/setup-chromedriver@v2
 
       - name: Run Tests by maven
         run: |
