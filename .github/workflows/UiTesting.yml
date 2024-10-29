@@ -25,7 +25,6 @@ jobs:
       DEV_TIME_ZONE: 'Europe/Kyiv'
       username: 'sergiy-bloshchenko-personal'
       project: 'compasswayTask'
-      driver: 'WebDriver'
 
     steps:
       - uses: szenius/set-timezone@v1.0
@@ -40,17 +39,10 @@ jobs:
         with:
           java-version: '21'
           distribution: 'oracle'
-#          cache: maven
-
-#      - uses: browser-actions/setup-chrome@latest
-#      - uses: nanasess/setup-chromedriver@v2
 
       - name: Run Tests by maven
         run: mvn clean test -Dtest=${{env.category}}
-#          if [ "${{env.driver}}" == "WebDriver" ]; then
-#            chmod +x src/main/resources/chromedriver
-#            sudo ls -l src/main/resources
-#          fi
+
       
 #      - name: Generate Allure report files
 #        uses: simple-elf/allure-report-action@master
