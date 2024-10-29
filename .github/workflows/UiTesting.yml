@@ -11,7 +11,7 @@ on:
 jobs:
   checkoutTesting:
     name: UI testing
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     timeout-minutes: 1000
 
     env:
@@ -42,34 +42,34 @@ jobs:
           distribution: 'oracle'
 #          cache: maven
 
-      - uses: browser-actions/setup-chrome@latest
+#      - uses: browser-actions/setup-chrome@latest
 #      - uses: nanasess/setup-chromedriver@v2
 
       - name: Run Tests by maven
         run: |
-          if [ "${{env.driver}}" == "WebDriver" ]; then
-            chmod +x src/main/resources/chromedriver
-            sudo ls -l src/main/resources
-          fi
+#          if [ "${{env.driver}}" == "WebDriver" ]; then
+#            chmod +x src/main/resources/chromedriver
+#            sudo ls -l src/main/resources
+#          fi
           mvn clean test -Dtest=${{env.category}}
       
-      - name: Generate Allure report files
-        uses: simple-elf/allure-report-action@master
-        id: allure-report
-        with:
-          allure_results: target/allure-results
-          gh_pages: gh-pages
-          allure_report: allure-report
-          allure_history: allure-history
+#      - name: Generate Allure report files
+#        uses: simple-elf/allure-report-action@master
+#        id: allure-report
+#        with:
+#          allure_results: target/allure-results
+#          gh_pages: gh-pages
+#          allure_report: allure-report
+#          allure_history: allure-history
 
-      - name: Update URL in report
-        run: sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/${{env.username}}/${{env.project}}/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
+#      - name: Update URL in report
+#        run: sudo sed -i 's|\(URL=\).*|'"URL=https://github.com/${{env.username}}/${{env.project}}/${{env.area}}/${{github.run_number}}/\"\>"'|' allure-history/index.html
 
       - name: Deploy report to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
-          publish_dir: allure-history
+          publish_dir: target/site/allure-maven-plugin
           destination_dir: ${{env.area}}
           keep_files: true
           cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
