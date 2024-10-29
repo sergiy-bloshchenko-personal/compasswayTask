@@ -84,7 +84,7 @@ public class UiTesting {
     @TmsLink("UI.AmazonPage.2")
     @Story("User should be able to change language on the main Amazon page")
     public void languageCanBeChanged(){
-        amazonPage.language.shouldBe(visible).hover();
+        amazonPage.language.shouldBe(visible);
         amazonPage.changeLanguage("de-DE");
         amazonPage.language.shouldHave(text("DE"));
         amazonPage.deliveryLogo.shouldHave(text("Liefern nach Ukraine"));

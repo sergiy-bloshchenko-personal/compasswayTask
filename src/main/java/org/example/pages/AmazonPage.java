@@ -27,9 +27,10 @@ public class AmazonPage {
     public SelenideElement sellTitle = $(By.xpath("//*[normalize-space(text())='Sell with Amazon']"));
 
     public void changeLanguage(String language) {
+        this.language.hover();
         $("#nav-flyout-icp .nav-template")
                 .find(By.xpath(".//*[@lang='"+language+"']"))
-                .should(Condition.visible, Duration.ofSeconds(3))
+                .should(Condition.appear, Duration.ofSeconds(5))
                 .click();
     }
 }
