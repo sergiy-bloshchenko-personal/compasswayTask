@@ -26,7 +26,7 @@ public class UiTesting {
 
     @Before
     public void init(){
-        System.setProperty("webdriver.chrome.driver","/usr/local/bin/chromedriver");
+//        System.setProperty("webdriver.chrome.driver","/usr/local/bin/chromedriver");
         Configuration.browser = "chrome";
         Configuration.assertionMode = AssertionMode.STRICT;
         Configuration.browserSize = "1920x1080";
@@ -51,8 +51,8 @@ public class UiTesting {
         closeWebDriver();
     }
 
-    @Rule
-    public ScreenShooter makeScreenshotOnFailure = ScreenShooter.failedTests();
+//    @Rule
+//    public ScreenShooter makeScreenshotOnFailure = ScreenShooter.failedTests();
 
     @Attachment
     public byte[] screenshot() {
