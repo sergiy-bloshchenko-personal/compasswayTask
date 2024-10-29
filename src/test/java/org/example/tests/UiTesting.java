@@ -3,6 +3,7 @@ package org.example.tests;
 import com.codeborne.selenide.AssertionMode;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import io.qameta.allure.Attachment;
 import org.example.pages.AmazonPage;
 import org.example.pages.CaptchaPage;
 import org.junit.Rule;
@@ -67,7 +68,8 @@ public class UiTesting {
         }
     };
 
-    private byte[] captureScreenShot() {
+    @Attachment()
+    public byte[] captureScreenShot() {
         try {
             return Base64.getDecoder().decode(Selenide.screenshot(OutputType.BASE64));
         } catch (Exception e) {
