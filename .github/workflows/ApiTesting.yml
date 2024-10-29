@@ -59,10 +59,10 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
-          publish_dir: allure-history
+          publish_dir: target/site/allure-maven-plugin
           destination_dir: ${{env.area}}
           keep_files: true
-          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
+          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
 
 #      - name: Post the link to the report
 #        uses: Sibz/github-status-action@v1

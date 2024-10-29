@@ -63,7 +63,7 @@ jobs:
           publish_dir: target/site/allure-maven-plugin
           destination_dir: ${{env.area}}
           keep_files: true
-          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
+          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
 
 #      - name: Post the link to the report
 #        if: always()
