@@ -45,13 +45,8 @@ jobs:
       - uses: nanasess/setup-chromedriver@v2
 
       - name: Run Tests by maven
-        run: |
-          if [ "${{env.driver}}" == "WebDriver" ]; then
-            pwd
-            ls -l
-            sudo ls -l /usr/local/bin
-          fi
-#          mvn clean test -Dtest=${{env.category}}
+        run:
+          mvn clean test -Dtest=${{env.category}}
 
       
 #      - name: Generate Allure report files

@@ -26,6 +26,7 @@ public class UiTesting {
 
     @Before
     public void init(){
+        System.setProperty("webdriver.chrome.driver","/usr/local/bin/chromedriver");
         Configuration.browser = "chrome";
         Configuration.assertionMode = AssertionMode.STRICT;
         Configuration.browserSize = "1920x1080";
