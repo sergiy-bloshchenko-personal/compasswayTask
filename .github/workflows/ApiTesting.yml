@@ -62,8 +62,13 @@ jobs:
           publish_dir: allure-history
           destination_dir: ${{env.area}}
           keep_files: true
-          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
+          cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
 
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '300s'
+            
       - name: Post the link to the report
         uses: Sibz/github-status-action@v1
         with:
