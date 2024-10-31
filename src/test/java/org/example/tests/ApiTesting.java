@@ -7,21 +7,11 @@ import org.example.helpers.RestHelper;
 import org.example.objects.Email;
 import org.example.objects.Emails;
 import org.example.objects.User;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class ApiTesting {
-
-//    private static User createNewUser(){
-//        User newUser = new User();
-//        Response createNewUser = RestHelper.postUsers(qaUser,newUser);
-//        assertEquals("Status code is not correct on user '"+newUser.username+"' creation " + createNewUser.asString(), 201, createNewUser.statusCode());
-//        User new_user = createNewUser.as(User.class);
-//        new_user.password = newUser.password;
-//        return new_user;
-//    }
 
     @Test
     @TmsLink("API.EmailTesting.1")
@@ -55,7 +45,7 @@ public class ApiTesting {
     @Story("User should get some list of emails that were sent previously")
     public void userGetsNotEmptyEmailsTesting(){
         User sender = User.createNewUser();
-        User receipient = User.getQaUser();
+        User receipient = User.createNewUser();
 
         Email email1 = RestHelper.postEmails(sender,receipient);
         assertEquals("Sender is not correct in the sent email", sender.id, email1.sender);
@@ -76,7 +66,7 @@ public class ApiTesting {
     @Story("User should get an email by emailID")
     public void userGetsEmailByIdTesting(){
         User sender = User.createNewUser();
-        User receipient = User.getQaUser();
+        User receipient = User.createNewUser();
 
         Email email1 = RestHelper.postEmails(sender,receipient);
         Email email2 = RestHelper.postEmails(sender,receipient);
@@ -93,7 +83,7 @@ public class ApiTesting {
     @Story("User should be able to delete an email by emailID")
     public void userDeletesEmailByIdTesting(){
         User sender = User.createNewUser();
-        User receipient = User.getQaUser();
+        User receipient = User.createNewUser();
 
         Email emailSent1 = RestHelper.postEmails(sender,receipient);
         assertEquals("Sender is not correct in the sent email", sender.id, emailSent1.sender);

@@ -64,15 +64,15 @@ jobs:
           keep_files: true
           cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
 
-#      - name: Post the link to the report
-#        uses: Sibz/github-status-action@v1
-#        with:
-#          authToken: ${{secrets.GITHUB_TOKEN}}
-#          context: "Test report"
-#          state: "success"
-#          owner: 'sergiyb'
-#          sha: ${{github.event.pull_request.head.sha || github.sha}}
-#          target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
+      - name: Post the link to the report
+        uses: Sibz/github-status-action@v1
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: "Test report"
+          state: "success"
+          owner: 'sergiyb'
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           
 #      - name: Publish JUnit Report
 #        uses: dorny/test-reporter@v1
