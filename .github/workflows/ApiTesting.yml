@@ -65,10 +65,10 @@ jobs:
           commit_message: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
 
-#      - name: Sleep for 1 min
-#        uses: jakejarvis/wait-action@master
-#        with:
-#          time: '60s'
+      - name: Sleep for 1 min
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '60s'
 
 #      - name: Post the link to the report
 #        uses: Sibz/github-status-action@v1.1.6
@@ -80,16 +80,16 @@ jobs:
 #          sha: ${{github.sha}}
 #          target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
 
-#      - name: Post the link to the report
-#        uses: guibranco/github-status-action-v2@v1.1.13
-#        with:
-#          authToken: ${{secrets.GITHUB_TOKEN}}
-#          context: 'Test run'
-#          description: 'Passed'
-#          owner: ${{env.username}}
-#          state: 'success'
-#          sha: ${{github.event.pull_request.head.sha || github.sha}}
-#          target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
+      - name: Post the link to the report
+        uses: guibranco/github-status-action-v2@v1.1.13
+        with:
+          authToken: ${{secrets.GITHUB_TOKEN}}
+          context: 'Test run'
+          description: 'Passed'
+          owner: ${{env.username}}
+          state: 'success'
+          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           
 #      - name: Publish JUnit Report
 #        uses: dorny/test-reporter@v1
