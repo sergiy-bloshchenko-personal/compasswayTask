@@ -81,7 +81,7 @@ jobs:
 #          target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
 
       - name: Post the link to the report
-        uses: guibranco/github-status-action-v2@latest
+        uses: guibranco/github-status-action-v2@v1.1.13
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: 'Test run'
