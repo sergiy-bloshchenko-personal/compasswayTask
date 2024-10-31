@@ -76,7 +76,7 @@ jobs:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: "Test report"
           state: "success"
-          owner: 'sergiyb'
+          owner: 'sergiy.bloshchenko'
           sha: ${{env.SHA7}}
           target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           
