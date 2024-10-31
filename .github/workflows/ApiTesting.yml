@@ -24,7 +24,7 @@ jobs:
 #      DEV_TIME_ZONE: 'Europe/Kyiv'
       username: 'sergiyjump'
       project: 'compasswayTask'
-      url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}
+      url: https://${{username}}.github.io/${{project}}/${{area}}
 
 
     steps:
