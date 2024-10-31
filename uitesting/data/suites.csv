@@ -1,4 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","9925","navigationThroughTopMenu","","Thu Oct 31 02:23:15 UTC 2024","failed","Thu Oct 31 02:23:25 UTC 2024","","org.example.tests.UiTesting","org.example.tests.UiTesting","navigationThroughTopMenu"
-"","8692","mainPageShouldBeOpened","","Thu Oct 31 02:23:25 UTC 2024","failed","Thu Oct 31 02:23:34 UTC 2024","","org.example.tests.UiTesting","org.example.tests.UiTesting","mainPageShouldBeOpened"
-"","66315","languageCanBeChanged","","Thu Oct 31 02:22:09 UTC 2024","failed","Thu Oct 31 02:23:15 UTC 2024","","org.example.tests.UiTesting","org.example.tests.UiTesting","languageCanBeChanged"
