@@ -63,6 +63,7 @@ jobs:
           publish_dir: allure-history
           destination_dir: ${{env.area}}
           keep_files: true
+          commit_message: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
 
 #      - name: Sleep for 1 min
