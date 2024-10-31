@@ -18,7 +18,7 @@ jobs:
       branch: 'main'
       category: 'ApiTesting'
       area: 'apitesting'
-      report: 'TEST-*.apitesting.*.xml'
+      report: 'TEST-*.ApiTesting.xml'
       threads: 1
       remoteSessionTimeout: '300'
 #      DEV_TIME_ZONE: 'Europe/Kyiv'

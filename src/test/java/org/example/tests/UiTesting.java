@@ -43,7 +43,7 @@ public class UiTesting {
         }
 
         try {
-            if (amazonPage.modal.exists()) {
+            if (amazonPage.modal.should(Condition.appear,Duration.ofSeconds(3)).exists()) {
                 amazonPage.modalDismissBtn.click();
                 amazonPage.modal.shouldNotBe(visible);
             }
