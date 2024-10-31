@@ -64,19 +64,19 @@ jobs:
           keep_files: true
           cname: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
 
-      - name: Sleep for 30 seconds
+      - name: Sleep for 1 min
         uses: jakejarvis/wait-action@master
         with:
-          time: '300s'
-            
+          time: '60s'
+
       - name: Post the link to the report
-        uses: Sibz/github-status-action@v1
+        uses: Sibz/github-status-action@v1.1.6
         with:
           authToken: ${{secrets.GITHUB_TOKEN}}
           context: "Test report"
           state: "success"
           owner: 'sergiyb'
-          sha: ${{github.event.pull_request.head.sha || github.sha}}
+          sha: ${{github.sha}}
           target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           
 #      - name: Publish JUnit Report
