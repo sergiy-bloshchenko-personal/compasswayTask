@@ -77,7 +77,7 @@ jobs:
           context: "Test report"
           state: "success"
           owner: ${{env.username}}
-          sha: ${{env.SHA7}}
+          sha: ${{github.sha}}
           target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           
 #      - name: Publish JUnit Report
