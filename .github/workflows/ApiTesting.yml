@@ -91,10 +91,10 @@ jobs:
           sha: ${{github.event.pull_request.head.sha || github.sha}}
           target_url: https://${{env.username}}.github.io/${{env.project}}/${{env.area}}/${{github.run_number}}
           
-      - name: Publish JUnit Report
-        uses: dorny/test-reporter@v1
-        with:
-          name: ${{env.area}} JUnit Report
-          path: target/surefire-reports/${{env.report}}
-          reporter: 'java-junit'
-          fail-on-error: 'true'
+#      - name: Publish JUnit Report
+#        uses: dorny/test-reporter@v1
+#        with:
+#          name: ${{env.area}} JUnit Report
+#          path: target/surefire-reports/${{env.report}}
+#          reporter: 'java-junit'
+#          fail-on-error: 'true'
