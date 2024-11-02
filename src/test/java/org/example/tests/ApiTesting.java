@@ -13,11 +13,13 @@ import static org.junit.Assert.*;
 
 public class ApiTesting {
 
+    private static final User qaUser = User.getQaUser();
+
     @Test
     @TmsLink("API.EmailTesting.1")
     @Story("Should be possible to create new user")
     public void shouldBePossibleCreateNewUserTesting(){
-        User newUser = User.createNewUser();
+        User newUser = User.createNewUser(qaUser);
         assertEquals("New user '"+newUser.username+"' is not authorized", newUser, RestHelper.getUsersCurrent(newUser));
     }
 
@@ -25,7 +27,7 @@ public class ApiTesting {
     @TmsLink("API.EmailTesting.2")
     @Story("Should not be possible to create existing user")
     public void shouldNotBePossibleCreateExistingUserTesting(){
-        User newUser = User.createNewUser();
+        User newUser = User.createNewUser(qaUser);
         Response createNewUser = RestHelper.postUsers(User.getQaUser(),newUser);
         assertNotEquals("Status code is not correct on existing user '"+newUser.username+"' creation " + createNewUser.asString(), 201, createNewUser.statusCode());
     }
@@ -44,8 +46,8 @@ public class ApiTesting {
     @TmsLink("API.EmailTesting.4")
     @Story("User should get some list of emails that were sent previously")
     public void userGetsNotEmptyEmailsTesting(){
-        User sender = User.createNewUser();
-        User receipient = User.createNewUser();
+        User sender = User.createNewUser(qaUser);
+        User receipient = User.createNewUser(qaUser);
 
         Email email1 = RestHelper.postEmails(sender,receipient);
         assertEquals("Sender is not correct in the sent email", sender.id, email1.sender);
@@ -65,8 +67,8 @@ public class ApiTesting {
     @TmsLink("API.EmailTesting.5")
     @Story("User should get an email by emailID")
     public void userGetsEmailByIdTesting(){
-        User sender = User.createNewUser();
-        User receipient = User.createNewUser();
+        User sender = User.createNewUser(qaUser);
+        User receipient = User.createNewUser(qaUser);
 
         Email email1 = RestHelper.postEmails(sender,receipient);
         Email email2 = RestHelper.postEmails(sender,receipient);
@@ -82,8 +84,8 @@ public class ApiTesting {
     @TmsLink("API.EmailTesting.6")
     @Story("User should be able to delete an email by emailID")
     public void userDeletesEmailByIdTesting(){
-        User sender = User.createNewUser();
-        User receipient = User.createNewUser();
+        User sender = User.createNewUser(qaUser);
+        User receipient = User.createNewUser(qaUser);
 
         Email emailSent1 = RestHelper.postEmails(sender,receipient);
         assertEquals("Sender is not correct in the sent email", sender.id, emailSent1.sender);

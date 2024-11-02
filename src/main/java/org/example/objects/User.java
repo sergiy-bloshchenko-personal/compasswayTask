@@ -42,8 +42,12 @@ public class User {
     }
 
     public static User createNewUser(){
+        return createNewUser(getQaUser());
+    }
+
+    public static User createNewUser(User user){
         User newUser = new User();
-        Response createNewUser = RestHelper.postUsers(getQaUser(),newUser);
+        Response createNewUser = RestHelper.postUsers(user, newUser);
         assertEquals("Status code is not correct on user '"+newUser.username+"' creation " + createNewUser.asString(), 201, createNewUser.statusCode());
         User new_user = createNewUser.as(User.class);
         new_user.password = newUser.password;
