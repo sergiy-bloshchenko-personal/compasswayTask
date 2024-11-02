@@ -28,7 +28,7 @@ public class ApiTesting {
     @Story("Should not be possible to create existing user")
     public void shouldNotBePossibleCreateExistingUserTesting(){
         User newUser = User.createNewUser(qaUser);
-        Response createNewUser = RestHelper.postUsers(User.getQaUser(),newUser);
+        Response createNewUser = RestHelper.postUsers(qaUser, newUser);
         assertNotEquals("Status code is not correct on existing user '"+newUser.username+"' creation " + createNewUser.asString(), 201, createNewUser.statusCode());
     }
 
@@ -36,7 +36,7 @@ public class ApiTesting {
     @TmsLink("API.EmailTesting.3")
     @Story("New user should get empty list of emails")
     public void newUserGetEmptyEmailsListTesting(){
-        User newUser = User.createNewUser();
+        User newUser = User.createNewUser(qaUser);
         Emails emails = RestHelper.getEmails(newUser);
         assertEquals("There are some emails exist for new user", 0, emails.count);
         assertEquals("There are some emails exist for new user", 0, emails.results.size());
